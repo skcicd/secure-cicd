@@ -3,12 +3,18 @@ from flask import Flask
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from config import Config
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
 
     # Load configuration
     app.config.from_object(Config)
+
+    # Initialize SQLAlchemy
+    db.init_app(app)
 
     # Initialize rate limiter
     limiter = Limiter(
