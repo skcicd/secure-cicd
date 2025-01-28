@@ -1,5 +1,5 @@
 # This file defines the routes and views for the application.
-from flask import Blueprint, jsonify, request, render_template, redirect, url_for, flash, current_app, session
+from flask import Blueprint, jsonify, request, render_template, redirect, url_for, flash, current_app, session, send_from_directory
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length
@@ -18,6 +18,10 @@ class LoginForm(FlaskForm):
 bp = Blueprint('main', __name__)
 limiter = Limiter(key_func=get_remote_address)
 
+# The code below lets the Flask server respond to browser requests for a favicon
+@bp.route('/favicon.ico')
+def favicon():
+    return send_from_directory(bp.static_folder, 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Home route
 @bp.route('/')
@@ -51,9 +55,11 @@ def register():
         return redirect(url_for('main.home'))
     return render_template("register.html")
 
+limiter.init_app(app)
+
 # Login page
 @bp.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")  # Limit to 5 requests per minute per IP
+@limiter.limit("5/minute")  # Limit to 5 requests per minute per IP
 def login():
     if request.method == 'POST':
         username = request.form.get('username')

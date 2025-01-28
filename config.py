@@ -13,5 +13,3 @@ class Config:
     OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
     DEBUG = False
     TESTING = False
-
-print(f"Loaded SECRET_KEY: {Config.SECRET_KEY}")  # Debug output
