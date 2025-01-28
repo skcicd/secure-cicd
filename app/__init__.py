@@ -7,24 +7,24 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# Initialize the Limiter
+limiter = Limiter(
+    get_remote_address,
+    default_limits=["200 per day", "50 per hour"],  # Global default limit
+)
+
+
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, static_folder="static", static_url_path="/static")
+
+    limiter.init_app(app)
 
     # Load configuration
     app.config.from_object(Config)
 
     # Initialize SQLAlchemy
     db.init_app(app)
-
-    # Initialize rate limiter
-    limiter = Limiter(
-        get_remote_address,
-        app=app,
-        default_limits=["200 per day", "50 per hour"], #applies to all routes unless overridden.
-
-    )
-
-
+    
     # Register blueprints (routes)
     with app.app_context():
         from . import routes

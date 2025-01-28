@@ -5,18 +5,17 @@ from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Length
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from app import db
+from app import db, limiter
 from app.models import User
 import requests
 from app.utils import login_required
-
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=50)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
 
 bp = Blueprint('main', __name__)
-limiter = Limiter(key_func=get_remote_address)
+#limiter = Limiter(key_func=get_remote_address)
 
 # The code below lets the Flask server respond to browser requests for a favicon
 @bp.route('/favicon.ico')
@@ -55,11 +54,9 @@ def register():
         return redirect(url_for('main.home'))
     return render_template("register.html")
 
-limiter.init_app(app)
-
 # Login page
 @bp.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5/minute")  # Limit to 5 requests per minute per IP
+@limiter.limit("5 per minute")  # Limit to 5 requests per minute per IP
 def login():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -92,7 +89,7 @@ def logout():
 # Weather route
 @bp.route('/weather', methods=['GET', 'POST'])
 @login_required
-@limiter.limit("5 per minute")  # Limit to 5 requests per minute per IP
+@limiter.limit("5/minute")  # Limit to 5 requests per minute per IP
 def weather():
     if request.method == 'POST':
         city = request.form.get('city')

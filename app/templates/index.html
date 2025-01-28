@@ -17,385 +17,92 @@
     </ul>
 
     <!--StartFragment-->
-        <h2 data-pm-slice="1 5 []">
-            <span>
-                Features
-            </span>
-        </h2>
-        <h3>
-            <span>
-                <strong>
-                    Core Functionality
-                </strong>
-            </span>
-        </h3>
-        <ol data-spread="true" start="1">
-            <li>
-                <p>
-                    <span>
-                        <strong>
-                            User Registration
-                        </strong>
-                    </span>
-                </p>
+        <h2 data-pm-slice="1 5 []"><span>Features</span></h2>
+        <h3><span><strong>Core Functionality</strong></span></h3>
+        <ol data-spread="true" start="1" compact="0.1">
+            <li><p><span><strong>User Registration</strong></span></p>
                 <ul data-spread="false">
-                    <li>
-                        <p>
-                            <span>
-                                Users can register securely by providing a username and password.
-                            </span>
-                        </p>
+                    <li><p><span>Users can register securely by providing a username and password.</span></p></li>
+                    <li><p><span>Passwords are hashed using </span><code><span>pbkdf2:sha256</span></code><span> for secure storage.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>User Login</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Registered users can log in with their credentials.</span></p></li>
+                    <li><p><span>Sessions are managed securely to track authenticated users.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>Weather Checker</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Logged-in users can check the current weather in any city.</span></p></li>
+                    <li><p><span>Integrates with the OpenWeatherMap API to fetch real-time weather data.</span></p></li></ul></li>
+                    <li><p><span><strong>Logout</strong></span></p>
+                        <ul data-spread="false"><li><p><span>Users can log out, clearing their session securely.</span></p></li></ul>
                     </li>
-                    <li>
-                        <p>
-                            <span>
-                                Passwords are hashed using 
-                            </span><code><span>
-                                pbkdf2:sha256
-                            </span>
-                        </code>
-                        <span> 
-                            for secure storage.
-                        </span>
-                    </p>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <p>
-                <span>
-                    <strong>
-                        User Login
-                    </strong>
-                </span>
-            </p>
-            <ul data-spread="false">
-                <li>
-                    <p>
-                        <span>
-                            Registered users can log in with their credentials.
-                        </span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span>
-                            Sessions are managed securely to track authenticated users.
-                        </span>
-                    </p>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <p>
-                <span>
-                    <strong>
-                        Weather Checker
-                    </strong>
-                </span>
-            </p>
-            <ul data-spread="false">
-                <li>
-                    <p>
-                        <span>
-                            Logged-in users can check the current weather in any city.
-                        </span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <span>
-                            Integrates with the OpenWeatherMap API to fetch real-time weather data.
-                        </span>
-                    </p>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <p>
-                <span>
-                    <strong>
-                        Logout
-                    </strong>
-                </span>
-            </p>
-            <ul data-spread="false">
-                <li>
-                    <p>
-                        <span>
-                            Users can log out, clearing their session securely.
-                        </span>
-                    </p>
-                </li>
-            </ul>
-        </li>
-    </ol>
+        </ol>
     
-    <h2>
-        <span>
-            Security Features
-        </span>
-    </h2>
-    <ol data-spread="true" start="1">
-        <li>
-            <p>
-                <span><strong>
-                    Password Security
-                </strong>
-            </span>
-        </p>
-        <ul data-spread="false">
-            <li>
-                <p>
-                    <span>
-                        Passwords are stored securely using 
-                    </span>
-                    <code>
-                        <span>
-                            pbkdf2:sha256
-                        </span>
-                    </code>
-                    <span> 
-                        hashing with salting.
-                    </span>
-                </p>
+        <h2><span>Security Features</span></h2>
+        <ol data-spread="true" start="1">
+            <li><p><span><strong>Password Security</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Passwords are stored securely using </span><code><span>pbkdf2:sha256</span></code><span> hashing with salting.</span></p></li>
+                    <li><p><span>Plaintext passwords are never stored.</span></p></li>
+                </ul>
             </li>
-            <li>
-                <p>
-                    <span>
-                        Plaintext passwords are never stored.
-                    </span>
-                </p>
+            <li><p><span><strong>Session Management</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Flask's </span><code><span>session</span></code><span> is used to manage user authentication.</span></p></li>
+                    <li><p><span>A strong </span><code><span>SECRET_KEY</span></code><span> ensures session integrity.</span></p></li>
+                    <li><p><span>Sessions are configured to be HTTP-only and secure.</span></p></li>
+                </ul>
             </li>
-        </ul>
-    </li>
-    <li>
-        <p>
-            <span>
-                <strong>
-                    Session Management
-                </strong>
-            </span>
-        </p>
-        <ul data-spread="false">
-            <li><p><span>
-                Flask's 
-            </span>
-            <code>
-                <span>
-                    session
-                </span>
-            </code>
-            <span> 
-                is used to manage user authentication.
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            <span>
-                A strong 
-            </span>
-            <code>
-                <span>
-                    SECRET_KEY
-                </span>
-            </code>
-            <span> 
-                ensures session integrity.
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            <span>
-                Sessions are configured to be HTTP-only and secure.
-            </span>
-        </p>
-    </li>
-</ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                Rate Limiting
-            </strong>
-        </span>
-    </p>
-    <ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    Rate limiting is enforced using 
-                </span>
-                <code>
-                    <span>
-                        Flask-Limiter
-                    </span>
-                </code>
-                <span> 
-                    to prevent brute-force attacks:
-                </span>
-            </p>
-            <ul data-spread="false">
-                <li>
-                    <p>
-                        <code>
-                            <span>
-                                /register
-                            </span>
-                        </code>
-                        <span>
-                            : 5 requests per minute per IP.
-                        </span>
-                    </p>
-                </li>
-                <li>
-                    <p>
-                        <code>
-                            <span>
-                                /login
-                            </span>
-                        </code>
-                        <span>
-                            : 10 requests per minute per IP.
-                        </span>
+            <li><p><span><strong>Rate Limiting</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Rate limiting is enforced using </span><code><span>Flask-Limiter</span></code><span> to prevent brute-force attacks:</span></p>
+                        <ul data-spread="false">
+                            <li><p><code><span>/register</span></code><span>: 5 requests per minute per IP.</span></p></li>
+                            <li><p><code><span>/login</span></code><span>: 5 requests per minute per IP.</span></p></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><p><span><strong>TLS/HTTPS</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>The app is configured to use TLS, ensuring all communication between the client and server is encrypted.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>Input Validation</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>User inputs (e.g., username, password, city name) are sanitized and validated to prevent injection attacks.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>Content Security Policy (CSP)</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>HTTP headers enforce a strict Content Security Policy to mitigate XSS attacks.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>Error Handling</strong></span></p>
+                <ul data-spread="false">
+                    <li><p><span>Graceful error handling prevents information leakage.</span></p></li>
+                    <li><p><span>Detailed errors are logged server-side but not exposed to users.</span></p></li>
+                </ul>
+            </li>
+            <li><p><span><strong>Environment Variables</strong></span></p>
+                <ul data-spread="false">
+                    <li><p>
+                        <span>Sensitive information like </span>
+                        <code><span>SECRET_KEY</span></code>
+                        <span> and </span>
+                        <code><span>OPENWEATHER_API_KEY</span></code>
+                        <span> is stored securely in </span>
+                        <code><span>.env</span></code>
+                        <span> files and loaded using </span>
+                        <code><span>python-dotenv</span></code><span>.</span>
                     </p>
                 </li>
             </ul>
         </li>
-    </ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                TLS/HTTPS
-            </strong>
-        </span>
-    </p>
-    <ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    The app is configured to use TLS, ensuring all communication between the client and server is encrypted.
-                </span>
-            </p>
-        </li>
-    </ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                Input Validation
-            </strong>
-        </span>
-    </p><ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    User inputs (e.g., username, password, city name) are sanitized and validated to prevent injection attacks.
-                </span>
-            </p>
-        </li>
-    </ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                Content Security Policy (CSP)
-            </strong>
-        </span>
-    </p>
-    <ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    HTTP headers enforce a strict Content Security Policy to mitigate XSS attacks.
-                </span>
-            </p>
-        </li>
-    </ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                Error Handling
-            </strong>
-        </span>
-    </p>
-    <ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    Graceful error handling prevents information leakage.
-                </span>
-            </p>
-        </li>
-        <li>
-            <p>
-                <span>
-                    Detailed errors are logged server-side but not exposed to users.
-                </span>
-            </p>
-        </li>
-    </ul>
-</li>
-<li>
-    <p>
-        <span>
-            <strong>
-                Environment Variables
-            </strong>
-        </span>
-    </p>
-    <ul data-spread="false">
-        <li>
-            <p>
-                <span>
-                    Sensitive information like 
-                </span>
-                <code>
-                    <span>
-                        SECRET_KEY
-                    </span>
-                </code>
-                <span> 
-                    and 
-                </span>
-                <code>
-                    <span>
-                        OPENWEATHER_API_KEY
-                    </span>
-                </code>
-                <span> 
-                    is stored securely in 
-                </span>
-                <code>
-                    <span>
-                        .env
-                    </span>
-                </code>
-                <span> 
-                    files and loaded using 
-                </span>
-                <code>
-                    <span>
-                        python-dotenv
-                    </span>
-                </code>
-                <span>
-                    .
-                </span>
-            </p>
-        </li>
-    </ul>
-</li>
-</ol><!--EndFragment-->
+    </ol><!--EndFragment-->
 
 </body>
 </html>
