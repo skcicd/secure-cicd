@@ -9,7 +9,7 @@ services:
       - "5000:5000"
     environment:
       - FLASK_ENV=production
-      - FLASK_APP=app.py
+      - FLASK_APP=run.py
     volumes:
       - sqlite_data:/app/instance  # Persistent SQLite storage
     networks:
