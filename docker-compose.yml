@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  flask-app:
+    build: .
+    container_name: flask_app
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=app.py
+    volumes:
+      - sqlite_data:/app/instance  # Persistent SQLite storage
+    networks:
+      - app_network
+
+volumes:
+  sqlite_data:  # Named volume for SQLite persistence
+
+networks:
+  app_network:
+    driver: bridge
