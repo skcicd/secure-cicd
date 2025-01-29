@@ -20,8 +20,8 @@ bp = Blueprint('main', __name__)
 # The code below lets the Flask server respond to browser requests for a favicon
 @bp.route('/favicon.ico')
 def favicon():
-    return send_from_directory(bp.static_folder, 'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
+    #return send_from_directory(bp.static_folder, 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    return send_from_directory('static', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 # Home route
 @bp.route('/')
 def home():
