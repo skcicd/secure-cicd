@@ -8,31 +8,33 @@ ENV PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_DEFAULT_TIMEOUT=100
 
-# Set a non-root user for security
-RUN groupadd -g 1000 appgroup && useradd -m -u 1000 -g appgroup appuser
-
-# Set work directory
+# Set a work directory
 WORKDIR /app
 
-# Copy only required files
+# Copy requirements and install dependencies
 COPY requirements.txt ./
-
-# Install dependencies using a virtual environment
 RUN python -m venv /opt/venv && \
     /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # ---- Production Image ----
 FROM python:3.11-slim
 
-# Security configurations
-RUN apt-get update && apt-get install -y curl && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Create a non-root user
+RUN groupadd -g 1000 appgroup && useradd -m -u 1000 -g appgroup appuser
 
-# Copy app source
+# Set work directory
 WORKDIR /app
+
+# Copy dependencies from the builder stage
 COPY --from=builder /opt/venv /opt/venv
+
+# Copy application files
 COPY . .
 
-# Use non-root user
+# Ensure entrypoint script has execution permissions
+RUN chmod +x /app/entrypoint.sh
+
+# Use non-root user AFTER the user is created
 USER appuser
 
 # Expose application port
@@ -41,9 +43,6 @@ EXPOSE 5000
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:5000/ || exit 1
-
-# Make the entrypoint script executable
-RUN chmod +x /app/entrypoint.sh
 
 # Entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
