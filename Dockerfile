@@ -1,35 +1,26 @@
 # Use a minimal base image
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim
 
-# Install necessary dependencies including curl
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Set environment variables to improve security
+# Set environment variables
 ENV PYTHONUNBUFFERED=1 \
     PYTHONFAULTHANDLER=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_DEFAULT_TIMEOUT=100
+    PIP_DEFAULT_TIMEOUT=100 \
+    TMPDIR=/app/tmp
 
-# Set a work directory
-WORKDIR /app
-
-# Copy requirements and install dependencies
-COPY requirements.txt ./
-RUN python -m venv /opt/venv && \
-    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
-
-# ---- Production Image ----
-FROM python:3.11-slim
-
-# Create a non-root user
-RUN groupadd -g 1000 appgroup && useradd -m -u 1000 -g appgroup appuser
+# Install system dependencies
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Set work directory
 WORKDIR /app
 
-# Copy dependencies from the builder stage
-COPY --from=builder /opt/venv /opt/venv
+# Copy requirements first (for efficient Docker layer caching)
+COPY requirements.txt .
+
+# Install dependencies in a virtual environment
+RUN python -m venv /opt/venv && \
+    /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .
@@ -37,18 +28,26 @@ COPY . .
 # Ensure entrypoint script has execution permissions
 RUN chmod +x /app/entrypoint.sh
 
-# Use non-root user AFTER the user is created
-USER appuser
+# Create non-root user
+RUN groupadd -g 1000 appgroup && useradd -m -u 1000 -g appgroup appuser
 
-# Set the path to use the virtual environment
-ENV PATH="/opt/venv/bin:$PATH"
+# Create required directories and set ownership
+RUN mkdir -p /app/instance /app/tmp && chmod 1777 /app/tmp
+RUN chown -R 1000:1000 /app  # Change ownership of /app to appuser
+
+# Change ownership of all files to appuser
+RUN chown -R appuser:appgroup /app
+
+# Use non-root user
+USER appuser
 
 # Expose application port
 EXPOSE 5000
 
 # Healthcheck
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
   CMD curl -f http://localhost:5000/ || exit 1
 
 # Entrypoint
 ENTRYPOINT ["/app/entrypoint.sh"]
+
