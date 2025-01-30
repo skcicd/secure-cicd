@@ -1,6 +1,9 @@
 # Use a minimal base image
 FROM python:3.11-slim AS builder
 
+# Install necessary dependencies including curl
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Set environment variables to improve security
 ENV PYTHONUNBUFFERED=1 \
     PYTHONFAULTHANDLER=1 \
