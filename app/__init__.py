@@ -1,5 +1,5 @@
 # This file initializes the Flask app and loads the configuration.
-from flask import Flask
+from flask import Flask, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from config import Config
@@ -14,7 +14,7 @@ def exempt_local_ip():
 limiter = Limiter(
     get_remote_address,
     default_limits=["200 per day", "50 per hour"],  # Global default limit
-    exempt_when=exempt_local_ip  # Exempt localhost
+    application_limits_exempt_when=exempt_local_ip  # Exempt localhost
 )
 
 
