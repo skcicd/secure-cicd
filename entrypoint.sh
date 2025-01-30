@@ -26,4 +26,4 @@ if [ ! -f "/app/instance/app.db" ]; then
 fi
 
 # Run the application
-exec python app.py
+exec python run.py
