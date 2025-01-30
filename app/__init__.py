@@ -7,10 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+def exempt_local_ip():
+    return get_remote_address() == "127.0.0.1"  # Exempt localhost
+
 # Initialize the Limiter
 limiter = Limiter(
     get_remote_address,
     default_limits=["200 per day", "50 per hour"],  # Global default limit
+    exempt_when=exempt_local_ip  # Exempt localhost
 )
 
 
