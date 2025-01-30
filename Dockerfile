@@ -40,6 +40,9 @@ RUN chmod +x /app/entrypoint.sh
 # Use non-root user AFTER the user is created
 USER appuser
 
+# Set the path to use the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Expose application port
 EXPOSE 5000
 

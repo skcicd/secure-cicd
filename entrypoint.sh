@@ -10,7 +10,7 @@ mkdir -p /app/instance
 source /opt/venv/bin/activate
 
 # Set environment variables explicitly
-export FLASK_APP=app.py
+export FLASK_APP=run.py
 export FLASK_ENV=production
 
 # Ensure database migrations are applied
@@ -26,4 +26,4 @@ if [ ! -f "/app/instance/app.db" ]; then
 fi
 
 # Run the application
-exec python run.py
+exec gunicorn --bind 0.0.0.0:5000 --workers 1 "run:app"
