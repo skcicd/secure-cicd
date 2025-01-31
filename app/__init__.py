@@ -4,6 +4,8 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
+from redis import Redis
+import os
 
 db = SQLAlchemy()
 
@@ -14,9 +16,9 @@ def exempt_local_ip():
 limiter = Limiter(
     get_remote_address,
     default_limits=["200 per day", "50 per hour"],  # Global default limit
-    application_limits_exempt_when=exempt_local_ip  # Exempt localhost
-)
-
+    application_limits_exempt_when=exempt_local_ip,  # Exempt localhost
+    storage_uri=os.getenv("REDIS_URL", "redis://redis:6379/0"),  # Use Redis as storage
+    )
 
 def create_app():
     app = Flask(__name__)
@@ -26,6 +28,9 @@ def create_app():
     # Load configuration
     app.config.from_object(Config)
 
+    # Initialize Redis connection
+    redis = Redis.from_url(app.config["RATELIMIT_STORAGE_URL"])
+
     # Initialize SQLAlchemy
     db.init_app(app)
     
@@ -33,6 +38,9 @@ def create_app():
     with app.app_context():
         from . import routes
         app.register_blueprint(routes.bp)
+
+    
+
 
     # Set security headers
     @app.after_request
@@ -43,6 +51,8 @@ def create_app():
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
         response.headers['X-XSS-Protection'] = '1; mode=block'
         return response
+    
+    
 
 
     return app
