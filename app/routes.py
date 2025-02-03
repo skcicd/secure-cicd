@@ -79,6 +79,7 @@ def login():
 
     return render_template("login.html")
 
+# Limit to 5 requests per minute per IP
 @bp.route('/logout')
 @limiter.limit("5 per minute")  # Limit to 5 requests per minute per IP
 def logout():
